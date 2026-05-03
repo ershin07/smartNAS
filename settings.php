@@ -2,6 +2,7 @@
 
     <header>
         <h1>SmartNAS Settings</h1>
+        <link rel="stylesheet" href="/css/style.css?v=5">
     </header>
 
     <!-- Use top-controls WITHOUT the "card" class here -->
