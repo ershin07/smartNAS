@@ -1,0 +1,193 @@
+/* ===== GLOBAL ===== */
+body {
+    margin: 0;
+    padding: 0;
+    background: #0d0d0d;
+    color: #e6e6e6;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 40px auto;
+}
+
+/* ===== HEADER ===== */
+header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 38px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.subtitle {
+    margin-top: 10px;
+    color: #b3b3b3;
+    font-size: 16px;
+}
+
+/* ===== CARD & CARD GROUP (FOR GRAPHS) ===== */
+.card {
+    background: #1a1a1a;
+    padding: 25px;
+    margin-bottom: 28px;
+    border-radius: 14px;
+    box-shadow: 0 0 18px rgba(0,0,0,0.45);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+}
+
+.card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #f2f2f2;
+}
+
+/* This makes the graph cards sit side-by-side */
+.card-group {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    align-items: stretch;
+    margin-bottom: 28px;
+    width: 100%;
+}
+
+.card-group .card {
+    flex: 1;
+    margin-bottom: 0 !important;
+    min-width: 0;
+}
+
+/* Graph Container Logic */
+.system-graphs-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.graph-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.graph-container canvas {
+    width: 100% !important;
+    height: 140px !important; /* Forces the height you had previously */
+}
+
+/* ===== ROWS & VALUES ===== */
+.row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #333;
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
+.label { color: #b3b3b3; font-size: 15px; }
+.value { font-weight: 600; font-size: 15px; color: #ffffff; }
+.value.present { color: #4caf50; }
+.value.missing { color: #ff5252; }
+.value.ip { white-space: pre-line; line-height: 1.4; }
+
+/* ===== NAVIGATION & TOP CONTROLS ===== */
+.top-controls {
+    display: flex;
+    justify-content: flex-start;
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    width: 100%;
+}
+
+.btn-nav {
+    padding: 8px 16px;
+    background: #00e0c6;
+    color: #000;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.2s;
+}
+
+.btn-nav:hover {
+    background: #fff;
+    color: #000;
+}
+
+/* OMV Navigation Button */
+.omv-btn {
+    background: #262626;
+    color: #ffffff;
+    border: 1px solid #444;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+
+.omv-btn i { color: #00e0c6; font-size: 13px; }
+
+.omv-btn:hover {
+    border-color: #00e0c6;
+    color: #00e0c6;
+}
+
+/* Hamburger Icon */
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    margin-left: auto; /* Keeps settings menu on the right */
+}
+
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+    width: 24px;
+    height: 3px;
+    background: #00e0c6;
+    display: block;
+    border-radius: 2px;
+    transition: 0.2s;
+    position: relative;
+}
+
+.hamburger::before, .hamburger::after { content: ""; position: absolute; left: 0; }
+.hamburger::before { top: -7px; }
+.hamburger::after { top: 7px; }
+
+/* ===== RESPONSIVENESS ===== */
+@media (max-width: 900px) {
+    .card-group {
+        flex-direction: column;
+    }
+}

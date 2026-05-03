@@ -11,6 +11,9 @@ body {
     width: 90%;
     max-width: 1000px;
     margin: 40px auto;
+    display: flex; /* Added to help vertical stacking */
+    flex-direction: column;
+    align-items: center; /* Ensures all direct children are centered */
 }
 
 /* ===== HEADER ===== */
@@ -32,95 +35,23 @@ header h1 {
     font-size: 16px;
 }
 
-/* ===== CARD & CARD GROUP (FOR GRAPHS) ===== */
-.card {
-    background: #1a1a1a;
-    padding: 25px;
-    margin-bottom: 28px;
-    border-radius: 14px;
-    box-shadow: 0 0 18px rgba(0,0,0,0.45);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 25px rgba(0,0,0,0.6);
-}
-
-.card h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 24px;
-    font-weight: 600;
-    color: #f2f2f2;
-}
-
-/* This makes the graph cards sit side-by-side */
-.card-group {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    align-items: stretch;
-    margin-bottom: 28px;
-    width: 100%;
-}
-
-.card-group .card {
-    flex: 1;
-    margin-bottom: 0 !important;
-    min-width: 0;
-}
-
-/* Graph Container Logic */
-.system-graphs-card {
-    display: flex;
-    flex-direction: column;
-}
-
-.graph-container {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 10px;
-}
-
-.graph-container canvas {
-    width: 100% !important;
-    height: 140px !important; /* Forces the height you had previously */
-}
-
-/* ===== ROWS & VALUES ===== */
-.row {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #333;
-}
-
-.row:last-child {
-    border-bottom: none;
-}
-
-.label { color: #b3b3b3; font-size: 15px; }
-.value { font-weight: 600; font-size: 15px; color: #ffffff; }
-.value.present { color: #4caf50; }
-.value.missing { color: #ff5252; }
-.value.ip { white-space: pre-line; line-height: 1.4; }
-
-/* ===== NAVIGATION & TOP CONTROLS ===== */
+/* ===== NAVIGATION & TOP CONTROLS (Centered Dock) ===== */
 .top-controls {
     display: flex;
-    justify-content: flex-start;
-    padding: 10px 0;
-    margin-bottom: 20px;
+    justify-content: center; /* Centers the button group in the middle */
+    width: 100%;
+    margin-bottom: 30px;
 }
 
 .control-buttons {
     display: flex;
-    gap: 15px;
+    gap: 10px; /* Keeps buttons close to each other */
     align-items: center;
-    width: 100%;
+    background: #1a1a1a; /* Background for the button group area */
+    padding: 10px 20px;
+    border-radius: 50px; /* Pill-shaped design */
+    border: 1px solid #333;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 
 .btn-nav {
@@ -131,11 +62,11 @@ header h1 {
     text-decoration: none;
     font-weight: bold;
     transition: 0.2s;
+    white-space: nowrap;
 }
 
 .btn-nav:hover {
     background: #fff;
-    color: #000;
 }
 
 /* OMV Navigation Button */
@@ -153,20 +84,20 @@ header h1 {
     transition: 0.2s;
 }
 
-.omv-btn i { color: #00e0c6; font-size: 13px; }
-
 .omv-btn:hover {
     border-color: #00e0c6;
     color: #00e0c6;
 }
 
-/* Hamburger Icon */
+/* Hamburger Icon - Centered with buttons */
 .icon-btn {
     background: none;
     border: none;
     cursor: pointer;
     padding: 8px;
-    margin-left: auto; /* Keeps settings menu on the right */
+    margin-left: 0; /* Removed auto-margin to keep it in the center group */
+    display: flex;
+    align-items: center;
 }
 
 .hamburger,
@@ -185,9 +116,75 @@ header h1 {
 .hamburger::before { top: -7px; }
 .hamburger::after { top: 7px; }
 
+/* ===== CARD & CARD GROUP (Centered) ===== */
+.card {
+    background: #1a1a1a;
+    padding: 25px;
+    margin-bottom: 28px;
+    border-radius: 14px;
+    box-shadow: 0 0 18px rgba(0,0,0,0.45);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: 100%; /* Ensures cards fill the container width */
+    box-sizing: border-box;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+}
+
+.card h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #f2f2f2;
+}
+
+/* Centers the card groups */
+.card-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: center; 
+    gap: 20px;
+    align-items: stretch;
+    margin-bottom: 28px;
+    width: 100%;
+}
+
+.card-group .card {
+    flex: 1;
+    margin-bottom: 0 !important;
+}
+
+/* Graph Container Logic */
+.graph-container canvas {
+    width: 100% !important;
+    height: 140px !important;
+}
+
+/* ===== ROWS & VALUES ===== */
+.row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #333;
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
 /* ===== RESPONSIVENESS ===== */
 @media (max-width: 900px) {
     .card-group {
         flex-direction: column;
+        align-items: center;
+    }
+    
+    .control-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+        border-radius: 20px;
     }
 }
