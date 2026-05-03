@@ -94,41 +94,46 @@ header h1 {
 }
 
 /* ===== system status graph===== */
-/* Container to hold both cards side-by-side */
+/* ===== CARD GROUP LAYOUT ===== */
 .card-group {
     display: flex;
     flex-direction: row;
     gap: 20px;
-    align-items: stretch; /* Makes both cards the same height */
+    align-items: stretch; /* Ensures both cards have the same height */
     margin-bottom: 28px;
+    width: 100%;
 }
 
-/* Adjust the individual cards within the group */
+/* LEFT CARD: Stats */
 .system-stats-card {
-    flex: 1; /* Takes equal width */
-    margin-bottom: 0; /* Remove default margin since group handles it */
+    flex: 1; 
+    margin-bottom: 0 !important; /* Overrides global card margin for alignment */
 }
 
+/* RIGHT CARD: Graphs */
 .system-graphs-card {
-    flex: 1; /* Takes equal width */
-    margin-bottom: 0;
-    min-width: 0; /* Crucial for Chart.js responsiveness */
-}
-
-/* Ensure the graphs stack vertically inside their card */
-.graph-container {
+    flex: 1;
+    margin-bottom: 0 !important;
+    min-width: 0; /* Critical for preventing Chart.js from expanding the div infinitely */
     display: flex;
     flex-direction: column;
-    gap: 15px;
+}
+
+.graph-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
 }
 
 .graph-container canvas {
-    width: 100% ;/*!important*/
-    height: 150px;
+    width: 100% !important;
+    height: 140px !important; /* Fixed height for each graph */
 }
 
-/* Optional: Stack cards vertically on mobile screens */
-@media (max-width: 768px) {
+/* Responsiveness: Stack them on smaller screens */
+@media (max-width: 850px) {
     .card-group {
         flex-direction: column;
     }

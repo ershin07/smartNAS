@@ -34,6 +34,7 @@ $arduino = parse_simple_text($arduino_raw);
     <title>SmartNAS Dashboard</title>
     <link rel="stylesheet" href="css/style.css?v=1">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css?v=2">
 </head>
 
 <body>
@@ -44,62 +45,59 @@ $arduino = parse_simple_text($arduino_raw);
         <div class="subtitle">Raspberry Pi 5 • Custom UPS • RAID Storage</div>
     </header>
 
-    <!-- SYSTEM STATUS -->
-    <section class="card">
+   <!-- SYSTEM SECTION GROUP -->
+<div class="card-group">
+
+    <!-- LEFT CARD: SYSTEM STATUS -->
+    <section class="card system-stats-card">
         <h2>System Status</h2>
 
-        <div class="system-status-card">
+        <div class="row">
+            <div class="label">CPU Temp:</div>
+            <div class="value" id="cpuTemp"><?= $system['CPU_TEMP'] ?> °C</div>
+        </div>
 
-            <!-- LEFT SIDE -->
-            <div class="system-left">
+        <div class="row">
+            <div class="label">CPU Load:</div>
+            <div class="value" id="cpuLoad"><?= $system['CPU_LOAD'] ?>%</div>
+        </div>
 
-                <div class="row">
-                    <div class="label">CPU Temp:</div>
-                    <div class="value" id="cpuTemp"><?= $system['CPU_TEMP'] ?> °C</div>
-                </div>
+        <div class="row">
+            <div class="label">Memory Used:</div>
+            <div class="value" id="memUsed"><?= $system['MEM'] ?? '--' ?></div>
+        </div>
 
-                <div class="row">
-                    <div class="label">CPU Load:</div>
-                    <div class="value" id="cpuLoad"><?= $system['CPU_LOAD'] ?>%</div>
-                </div>
+        <div class="row">
+            <div class="label">SD Total:</div>
+            <div class="value" id="sdTotal"><?= $system['SD_TOTAL'] ?? '--' ?></div>
+        </div>
 
-                <div class="row">
-                    <div class="label">Memory Used:</div>
-                    <div class="value" id="memUsed"><?= $system['MEM'] ?? '--' ?></div>
-                </div>
+        <div class="row">
+            <div class="label">SD Used:</div>
+            <div class="value" id="sdUsed"><?= $system['SD_USED'] ?? '--' ?></div>
+        </div>
 
-                <div class="row">
-                    <div class="label">SD Total:</div>
-                    <div class="value" id="sdTotal"><?= $system['SD_TOTAL'] ?? '--' ?></div>
-                </div>
+        <div class="row">
+            <div class="label">SD Free:</div>
+            <div class="value" id="sdFree"><?= $system['SD_FREE'] ?? '--' ?></div>
+        </div>
 
-                <div class="row">
-                    <div class="label">SD Used:</div>
-                    <div class="value" id="sdUsed"><?= $system['SD_USED'] ?? '--' ?></div>
-                </div>
-
-                <div class="row">
-                    <div class="label">SD Free:</div>
-                    <div class="value" id="sdFree"><?= $system['SD_FREE'] ?? '--' ?></div>
-                </div>
-
-                <div class="row">
-                    <div class="label">Uptime:</div>
-                    <div class="value" id="uptime"><?= $system['UPTIME'] ?></div>
-                </div>
-
-            </div>
-
-            <!-- RIGHT SIDE: REAL-TIME GRAPHS -->
-            <div class="system-right">
-                <canvas id="cpuLoadChart"></canvas>
-                <canvas id="memUsedChart"></canvas>
-            </div>
-
+        <div class="row">
+            <div class="label">Uptime:</div>
+            <div class="value" id="uptime"><?= $system['UPTIME'] ?></div>
         </div>
     </section>
 
+    <!-- RIGHT CARD: REAL-TIME GRAPHS -->
+    <section class="card system-graphs-card">
+        <h2>Real-Time Telemetry</h2>
+        <div class="graph-container">
+            <canvas id="cpuLoadChart"></canvas>
+            <canvas id="memUsedChart"></canvas>
+        </div>
+    </section>
 
+</div>
     <!-- NETWORK -->
     <section class="card">
         <h2>Network</h2>
