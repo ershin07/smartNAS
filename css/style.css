@@ -172,21 +172,26 @@ body {
     box-sizing: border-box;
 }
 
-/* ===== NAVIGATION DOCK (Centered) ===== */
+/* ===== NAVIGATION DOCK FIX ===== */
 .top-controls {
     display: flex;
-    justify-content: center;
+    justify-content: center; /* Centers the dock on the page */
+    width: 100%;
     margin-bottom: 30px;
 }
 
 .control-buttons {
-    display: flex;
-    gap: 10px;
+    display: inline-flex; /* Changed from flex to inline-flex */
+    gap: 15px;
     align-items: center;
     background: #1a1a1a;
     padding: 10px 20px;
     border-radius: 50px;
     border: 1px solid #333;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    
+    /* This prevents it from stretching to the full width of the container */
+    width: auto; 
 }
 
 /* ===== CARD GROUPS (Centered & Equal Rows) ===== */
