@@ -82,34 +82,36 @@ const fanMode = document.getElementById('fanMode');
 const fanSlider = document.getElementById('fanSlider');
 const fanValueDisplay = document.getElementById('fanValueDisplay');
 
-// Enable/disable slider based on mode
 function updateSliderState() {
-    if (fanMode.value === "AUTO") {
-        fanSlider.disabled = true;
-        fanSlider.style.opacity = "0.5";
-    } else {
-        fanSlider.disabled = false;
-        fanSlider.style.opacity = "1";
-    }
+    const isAuto = (fanMode.value === "AUTO");
+    fanSlider.disabled = isAuto;
+    fanSlider.style.opacity = isAuto ? "0.5" : "1";
 }
 
-// When mode changes → send MODE command + update UI
+// Mode Change Logic
 fanMode.onchange = async function() {
+    // 1. Tell Arduino to switch modes
     await fetch("api/fanmode.php?mode=" + fanMode.value);
+    
+    // 2. If switched to MANUAL, immediately sync the fan speed to the current slider position
+    if (fanMode.value === "MANUAL") {
+        await fetch("api/fan.php?speed=" + fanSlider.value);
+    }
+    
     updateSliderState();
 };
 
-// Update displayed % while sliding
+// Continuous update for the UI text
 fanSlider.oninput = function() {
     fanValueDisplay.textContent = fanSlider.value + "%";
 };
 
-// Send DUTY command when slider released
+// Send command only when the user lets go of the slider (efficiency)
 fanSlider.onchange = async function() {
     await fetch("api/fan.php?speed=" + fanSlider.value);
 };
 
-// Initialize UI state on load
+// Initial state check
 updateSliderState();
 
 </script>

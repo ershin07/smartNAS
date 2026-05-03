@@ -1,19 +1,22 @@
 <?php
-// api/fan.php
-
 if (!isset($_GET['speed'])) {
     echo "Missing speed";
     exit;
 }
 
 $speed = intval($_GET['speed']);
-if ($speed < 0) $speed = 0;
-if ($speed > 100) $speed = 100;
+$speed = max(0, min(100, $speed)); 
 
-// Format EXACTLY as Arduino expects
-$cmd = "DUTY:" . $speed . "%\n";
+$device = "/dev/ttyACM0";
+exec("stty -F $device 9600 raw -echo");
 
-// Send to Arduino serial port
-file_put_contents("/dev/ttyACM0", $cmd);
+$cmd = "DUTY:" . $speed . ";\n";
 
-echo "OK";
+$fp = fopen($device, "w");
+if ($fp) {
+    fwrite($fp, $cmd);
+    fclose($fp);
+    echo "OK";
+} else {
+    echo "Error: Device busy.";
+}
