@@ -35,14 +35,6 @@ $arduino = parse_simple_text($arduino_raw);
     <link rel="stylesheet" href="css/style.css?v=1">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="css/style.css?v=2">
-    <nav class="top-nav">
-    <a href="index.php">Dashboard</a>
-    <button class="icon-btn" onclick="location.href='settings.php'">
-        <span class="hamburger"></span>
-    </button>
-    </nav>
-
-  
 </head>
 
 <body>
@@ -53,6 +45,15 @@ $arduino = parse_simple_text($arduino_raw);
         <div class="subtitle">Raspberry Pi 5 • Custom UPS • RAID Storage</div>
     </header>
 
+    <section class="card top-controls">
+        <div class="control-buttons">
+            <a href="index.php" class="btn-nav">Dashboard</a>
+
+            <button class="icon-btn" onclick="location.href='settings.php'">
+                <span class="hamburger"></span>
+            </button>
+        </div>
+    </section>
    <!-- SYSTEM SECTION GROUP -->
 <div class="card-group">
 
