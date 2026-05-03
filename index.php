@@ -165,6 +165,7 @@ let chartLabels = [];
 async function updateSystemStatus() {
     try {
         const response = await fetch("api/system.php?nocache=" + Date.now());
+            cache: "no-store"
         const text = await response.text();
 
         const data = {};
@@ -233,12 +234,16 @@ const cpuLoadChart = new Chart(document.getElementById('cpuLoadChart'), {
             label: 'CPU Load (%)',
             data: cpuLoadData,
             borderColor: 'rgb(54, 162, 235)',
-            tension: 0.3
+            tension: 0.1 // Low tension makes the lines snap better
         }]
     },
     options: {
-        animation: false,
-        scales: { y: { beginAtZero: true, max: 100 } }
+        animation: false, // This is the "Snap" - disables the sliding animation
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { 
+            y: { beginAtZero: true, max: 100 } 
+        }
     }
 });
 
@@ -250,16 +255,18 @@ const memUsedChart = new Chart(document.getElementById('memUsedChart'), {
             label: 'Memory Used (%)',
             data: memUsedData,
             borderColor: 'rgb(255, 159, 64)',
-            tension: 0.3
+            tension: 0.1
         }]
     },
     options: {
         animation: false,
+        responsive: true,
+        maintainAspectRatio: false,
         scales: { y: { beginAtZero: true, max: 100 } }
     }
 });
 
-setInterval(updateSystemStatus, 2000);
+setInterval(updateSystemStatus, 1000);
 updateSystemStatus();
 </script>
 
