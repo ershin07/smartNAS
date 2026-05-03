@@ -33,6 +33,7 @@ $arduino = parse_simple_text($arduino_raw);
     <meta charset="UTF-8">
     <title>SmartNAS Dashboard</title>
     <link rel="stylesheet" href="css/style.css?v=1">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -47,47 +48,61 @@ $arduino = parse_simple_text($arduino_raw);
     <section class="card">
         <h2>System Status</h2>
 
-        <div class="row">
-            <div class="label">CPU Temp:</div>
-            <div class="value" id="cpuTemp"><?= $system['CPU_TEMP'] ?> °C</div>
-        </div>
+        <div class="system-status-card">
 
-        <div class="row">
-            <div class="label">CPU Load:</div>
-            <div class="value" id="cpuLoad"><?= $system['CPU_LOAD'] ?>%</div>
-        </div>
+            <!-- LEFT SIDE -->
+            <div class="system-left">
 
-        <div class="row">
-            <div class="label">Memory Used:</div>
-            <div class="value" id="memUsed"><?= $system['MEM'] ?? '--' ?></div>
-        </div>
+                <div class="row">
+                    <div class="label">CPU Temp:</div>
+                    <div class="value" id="cpuTemp"><?= $system['CPU_TEMP'] ?> °C</div>
+                </div>
 
-        <div class="row">
-            <div class="label">SD Total:</div>
-            <div class="value" id="sdTotal"><?= $system['SD_TOTAL'] ?? '--' ?></div>
-        </div>
+                <div class="row">
+                    <div class="label">CPU Load:</div>
+                    <div class="value" id="cpuLoad"><?= $system['CPU_LOAD'] ?>%</div>
+                </div>
 
-        <div class="row">
-            <div class="label">SD Used:</div>
-            <div class="value" id="sdUsed"><?= $system['SD_USED'] ?? '--' ?></div>
-        </div>
+                <div class="row">
+                    <div class="label">Memory Used:</div>
+                    <div class="value" id="memUsed"><?= $system['MEM'] ?? '--' ?></div>
+                </div>
 
-        <div class="row">
-            <div class="label">SD Free:</div>
-            <div class="value" id="sdFree"><?= $system['SD_FREE'] ?? '--' ?></div>
-        </div>
+                <div class="row">
+                    <div class="label">SD Total:</div>
+                    <div class="value" id="sdTotal"><?= $system['SD_TOTAL'] ?? '--' ?></div>
+                </div>
 
+                <div class="row">
+                    <div class="label">SD Used:</div>
+                    <div class="value" id="sdUsed"><?= $system['SD_USED'] ?? '--' ?></div>
+                </div>
 
-        <div class="row">
-            <div class="label">Uptime:</div>
-            <div class="value" id="uptime"><?= $system['UPTIME'] ?></div>
+                <div class="row">
+                    <div class="label">SD Free:</div>
+                    <div class="value" id="sdFree"><?= $system['SD_FREE'] ?? '--' ?></div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Uptime:</div>
+                    <div class="value" id="uptime"><?= $system['UPTIME'] ?></div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT SIDE: REAL-TIME GRAPHS -->
+            <div class="system-right">
+                <canvas id="cpuLoadChart"></canvas>
+                <canvas id="memUsedChart"></canvas>
+            </div>
+
         </div>
     </section>
 
 
-     <!-- NETWORK -->
-   <section class="card">
-    <h2>Network</h2>
+    <!-- NETWORK -->
+    <section class="card">
+        <h2>Network</h2>
 
         <div class="row">
             <div class="label">IP Address:</div>
@@ -97,7 +112,7 @@ $arduino = parse_simple_text($arduino_raw);
 
     <!-- UPS & FAN -->
     <section class="card">
-    <h2>UPS & Fan Status</h2>
+        <h2>UPS & Fan Status</h2>
 
         <div class="row">
             <div class="label">Battery:</div>
@@ -123,7 +138,7 @@ $arduino = parse_simple_text($arduino_raw);
 
     <!-- STORAGE -->
     <section class="card">
-    <h2>Storage Status</h2>
+        <h2>Storage Status</h2>
 
         <div class="row">
             <div class="label">HDD0:</div>
@@ -146,17 +161,14 @@ $arduino = parse_simple_text($arduino_raw);
         </div>
     </section>
 
-     <!-- RIGHT SIDE: Real-time charts -->
-    <div class="system-right">
-        <canvas id="cpuLoadChart"></canvas>
-        <canvas id="memUsedChart"></canvas>
-    </div>
-   
-
 </div>
 
 <!-- REALTIME TELEMETRY SCRIPT -->
 <script>
+let cpuLoadData = [];
+let memUsedData = [];
+let chartLabels = [];
+
 async function updateSystemStatus() {
     try {
         const response = await fetch("api/system.php?nocache=" + Date.now());
@@ -187,7 +199,6 @@ async function updateSystemStatus() {
         document.getElementById("uptime").textContent = data.UPTIME;
         document.getElementById("ipAddress").textContent = data.IP;
 
-
         // UPS & FAN
         document.getElementById("batValue").textContent = data.BAT + "%";
         document.getElementById("tempValue").textContent = data.TEMP + " °C";
@@ -200,30 +211,26 @@ async function updateSystemStatus() {
         document.getElementById("hdd2").textContent = data.HDD2 == 1 ? "Online" : "Offline";
         document.getElementById("hdd3").textContent = data.HDD3 == 1 ? "Online" : "Offline";
 
+        // GRAPH UPDATE
+        let now = new Date().toLocaleTimeString();
+        chartLabels.push(now);
+
+        cpuLoadData.push(parseInt(data.CPU_LOAD));
+        memUsedData.push(parseInt(data.MEM));
+
+        if (chartLabels.length > 20) {
+            chartLabels.shift();
+            cpuLoadData.shift();
+            memUsedData.shift();
+        }
+
+        cpuLoadChart.update();
+        memUsedChart.update();
+
     } catch (e) {
         console.log("System fetch error:", e);
     }
-    let now = new Date().toLocaleTimeString();
-    
-    chartLabels.push(now);
-
-    cpuLoadData.push(parseInt(data.CPU_LOAD));
-    memUsedData.push(parseInt(data.MEM));
-
-    if (chartLabels.length > 20) {
-        chartLabels.shift();
-        cpuLoadData.shift();
-        memUsedData.shift();
-    }
-
-    cpuLoadChart.update();
-    memUsedChart.update();
-
 }
-
-let cpuLoadData = [];
-let memUsedData = [];
-let chartLabels = [];
 
 const cpuLoadChart = new Chart(document.getElementById('cpuLoadChart'), {
     type: 'line',
@@ -262,5 +269,6 @@ const memUsedChart = new Chart(document.getElementById('memUsedChart'), {
 setInterval(updateSystemStatus, 2000);
 updateSystemStatus();
 </script>
+
 </body>
 </html>
