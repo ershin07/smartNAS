@@ -47,10 +47,13 @@ $arduino = parse_simple_text($arduino_raw);
 
     <section class="card top-controls">
         <div class="control-buttons">
-            <a href="index.php" class="btn-nav">Dashboard</a>
 
-            <button class="icon-btn" onclick="location.href='settings.php'">
-                <span class="hamburger"></span>
+            <button class="dashboard-btn" onclick="window.open('http://pinas.local:80', '_blank')">
+                <i class="fas fa-database"></i> Dashboard
+            </button>
+
+            <button class="setting-btn" onclick="location.href='settings.php'">
+                <i class="fas fa-database"></i> Settings
             </button>
 
              <button class="omv-btn" onclick="window.open('http://pinas.local:8080', '_blank')">
