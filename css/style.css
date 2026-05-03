@@ -163,45 +163,51 @@ body {
 }
 
 /* ===== CARD LAYOUT (The "Not Stretched" Fix) ===== */
-.card {
-    background: #1a1a1a;
-    padding: 25px;
-    margin-bottom: 28px;
-    border-radius: 14px;
-    box-shadow: 0 0 18px rgba(0,0,0,0.45);
-    transition: transform 0.2s ease;
-    
-    /* This centers the card itself without breaking the text inside */
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 500px; /* Limits width so it's not stretched */
+/* ===== CONTAINER ===== */
+.container {
+    width: 95%;
+    /* This width (1020px) accounts for two 500px cards + one 20px gap */
+    max-width: 1020px; 
+    margin: 40px auto;
 }
 
-/* For the side-by-side cards (Status and Telemetry) */
+/* ===== CARD GROUPS (The Alignment Fix) ===== */
 .card-group {
     display: flex;
     flex-direction: row;
-    justify-content: center; 
-    gap: 20px;
+    justify-content: center;
+    gap: 20px; /* Consistent spacing between all cards */
     margin-bottom: 28px;
     width: 100%;
 }
 
-.card-group .card {
-    flex: 1;
-    max-width: 500px; /* Each card in a group gets this max-width */
-    margin-left: 0;
-    margin-right: 0;
+/* Base card style */
+.card {
+    background: #1a1a1a;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 0 18px rgba(0,0,0,0.45);
+    transition: transform 0.2s ease;
+    box-sizing: border-box;
+    /* Cards will now grow/shrink to fill the group row perfectly */
+    flex: 1; 
+    min-width: 0; /* Prevents flex items from overflowing */
 }
 
-/* ===== ROWS (Label Left, Value Right) ===== */
+/* Row 1 Specifics (2 cards) */
+/* They will naturally be about 500px wide each */
+
+/* Row 2 Specifics (3 cards) */
+/* They will naturally be about 326px wide each */
+
+
+/* ===== ROWS INSIDE CARDS (Label Left, Value Right) ===== */
 .row {
     display: flex;
-    justify-content: space-between; /* This puts value back on the right */
+    justify-content: space-between;
     align-items: center;
     padding: 12px 0;
     border-bottom: 1px solid #333;
-    width: 100%; /* Ensures it fills the card width */
 }
 
 .row:last-child {
@@ -221,9 +227,8 @@ body {
 @media (max-width: 900px) {
     .card-group {
         flex-direction: column;
-        align-items: center;
     }
     .card {
-        max-width: 100%; /* Take full width on mobile */
+        width: 100%;
     }
 }
