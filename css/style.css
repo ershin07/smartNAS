@@ -55,18 +55,22 @@ header h1 {
 }
 
 .btn-nav {
+    background: #262626;
+    color: #ffffff;
+    border: 1px solid #444;
     padding: 8px 16px;
-    background: #00e0c6;
-    color: #000;
     border-radius: 6px;
-    text-decoration: none;
+    cursor: pointer;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     transition: 0.2s;
-    white-space: nowrap;
 }
 
 .btn-nav:hover {
-    background: #fff;
+    border-color: #00e0c6;
+    color: #00e0c6;
 }
 
 /* OMV Navigation Button */
