@@ -5,10 +5,15 @@ function parse_simple_text($text) {
     $pairs = explode(";", trim($text));
 
     foreach ($pairs as $pair) {
-        if (strpos($pair, ":") !== false) {
+        if (strpos($pair, "=") !== false) {
+            list($key, $value) = explode("=", $pair, 2);
+        } elseif (strpos($pair, ":") !== false) {
             list($key, $value) = explode(":", $pair, 2);
-            $result[trim($key)] = trim($value);
+        } else {
+            continue;
         }
+
+        $result[trim($key)] = trim($value);
     }
 
     return $result;
@@ -21,6 +26,7 @@ $system = parse_simple_text($system_raw);
 $arduino = parse_simple_text($arduino_raw);
 
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -134,11 +140,19 @@ async function updateTelemetry() {
         const response = await fetch("api/arduino.php");
         const text = await response.text();
 
-        // Parse simple text format
         const data = {};
         text.trim().split(";").forEach(pair => {
-            const [key, value] = pair.split(":");
-            if (key && value) data[key.trim()] = value.trim();
+            let key, value;
+
+            if (pair.includes("=")) {
+                [key, value] = pair.split("=");
+            } else if (pair.includes(":")) {
+                [key, value] = pair.split(":");
+            }
+
+            if (key && value) {
+                data[key.trim()] = value.trim();
+            }
         });
 
         document.getElementById("batValue").textContent = data.BAT + "%";
@@ -154,7 +168,5 @@ async function updateTelemetry() {
 setInterval(updateTelemetry, 5000);
 updateTelemetry();
 </script>
-
-
 </body>
 </html>
