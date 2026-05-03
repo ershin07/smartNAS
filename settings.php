@@ -70,10 +70,7 @@ $current_duty = trim(@file_get_contents('/tmp/fan_duty')) ?: '50';
             <div class="label">Fan Speed:</div>
                 <div class="value">
                     <!-- Internal value stays 0-100 for your API -->
-                    <input type="range" id="fanSlider" min="50" max="100" value="<?php echo $current_duty; ?>">
-                    
-                    <!-- UI shows the real speed (50% to 100%) -->
-                    <span id="fanValueDisplay" style="font-weight: bold; color: #00e0c6; margin-left: 10px;"></span>
+                    <input type="range" id="fanSlider" min="0" max="100" value="<?php echo $current_duty; ?>">
                 </div>
         </div>
 
@@ -86,55 +83,39 @@ $current_duty = trim(@file_get_contents('/tmp/fan_duty')) ?: '50';
 document.getElementById('shutdownBtn').onclick = async () => {
     if (!confirm("Shutdown NAS?")) return;
     await fetch("api/shutdown.php");
-    alert("Shutdown command sent.");
 };
 
 document.getElementById('rebootBtn').onclick = async () => {
     if (!confirm("Reboot NAS?")) return;
     await fetch("api/reboot.php");
-    alert("Reboot command sent.");
 };
 
 // Fan controls
 const fanMode = document.getElementById('fanMode');
 const fanSlider = document.getElementById('fanSlider');
-const fanValueDisplay = document.getElementById('fanValueDisplay');
 
 function updateSliderState() {
     const isAuto = (fanMode.value === "AUTO");
     fanSlider.disabled = isAuto;
     fanSlider.style.opacity = isAuto ? "0.5" : "1";
-    
-    // UI shows 50-100% directly because of your new HTML min/max
-    fanValueDisplay.textContent = fanSlider.value + "%";
 }
 
-// Mode Change Logic
+// Mode Change: Sets mode and sends current slider value if Manual
 fanMode.onchange = async function() {
-    await fetch("api/fanmode.php?mode=" + fanMode.value);
+    await fetch("api/fanmode.php?mode=" + this.value);
     
-    if (fanMode.value === "MANUAL") {
-        // Map 50-100 slider to 0-100 PWM API
-        const pwmValue = (fanSlider.value - 50) * 2;
-        await fetch("api/fan.php?speed=" + pwmValue);
+    if (this.value === "MANUAL") {
+        await fetch("api/fan.php?speed=" + fanSlider.value);
     }
-    
     updateSliderState();
 };
 
-// Continuous update for the UI text (1:1 mapping now)
-fanSlider.oninput = function() {
-    fanValueDisplay.textContent = this.value + "%";
-};
-
-// Send command with the converted mapping
+// Slider Change: Sends 0-100 directly to your PWM API
 fanSlider.onchange = async function() {
-    // Map 50-100 slider to 0-100 PWM API
-    const pwmValue = (this.value - 50) * 2;
-    await fetch("api/fan.php?speed=" + pwmValue);
+    await fetch("api/fan.php?speed=" + this.value);
 };
 
-// Initial state check
+// Initial state check on page load
 updateSliderState();
 </script>
 
