@@ -58,6 +58,27 @@ $arduino = parse_simple_text($arduino_raw);
         </div>
 
         <div class="row">
+            <div class="label">Memory Used:</div>
+            <div class="value" id="memUsed"><?= $system['MEM'] ?? '--' ?></div>
+        </div>
+
+        <div class="row">
+            <div class="label">SD Total:</div>
+            <div class="value" id="sdTotal"><?= $system['SD_TOTAL'] ?? '--' ?></div>
+        </div>
+
+        <div class="row">
+            <div class="label">SD Used:</div>
+            <div class="value" id="sdUsed"><?= $system['SD_USED'] ?? '--' ?></div>
+        </div>
+
+        <div class="row">
+            <div class="label">SD Free:</div>
+            <div class="value" id="sdFree"><?= $system['SD_FREE'] ?? '--' ?></div>
+        </div>
+
+
+        <div class="row">
             <div class="label">Uptime:</div>
             <div class="value" id="uptime"><?= $system['UPTIME'] ?></div>
         </div>
@@ -101,7 +122,7 @@ $arduino = parse_simple_text($arduino_raw);
 
 
     <!-- STORAGE -->
-    <<section class="card">
+    <section class="card">
     <h2>Storage Status</h2>
 
         <div class="row">
@@ -155,8 +176,13 @@ async function updateSystemStatus() {
         // SYSTEM
         document.getElementById("cpuTemp").textContent = data.CPU_TEMP + " °C";
         document.getElementById("cpuLoad").textContent = data.CPU_LOAD + " %";
+        document.getElementById("memUsed").textContent = data.MEM + "%";
+        document.getElementById("sdTotal").textContent = data.SD_TOTAL;
+        document.getElementById("sdUsed").textContent = data.SD_USED;
+        document.getElementById("sdFree").textContent = data.SD_FREE;
         document.getElementById("uptime").textContent = data.UPTIME;
         document.getElementById("ipAddress").textContent = data.IP;
+
 
         // UPS & FAN
         document.getElementById("batValue").textContent = data.BAT + "%";
