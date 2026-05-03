@@ -117,26 +117,64 @@ header h1 {
 .hamburger::after { top: 7px; }
 
 /* ===== CARD & CARD GROUP (Centered) ===== */
-/* ===== GLOBAL & CONTAINER ===== */
-body {
-    margin: 0;
-    padding: 0;
-    background: #0d0d0d;
-    color: #e6e6e6;
-    font-family: "Segoe UI", Arial, sans-serif;
-}
-
+/* ===== CONTAINER ===== */
 .container {
     width: 95%;
-    max-width: 1100px; /* Limits how wide the whole dashboard can get */
+    max-width: 1200px; /* Limits the overall spread of the dashboard */
     margin: 40px auto;
-    /* We remove 'display: flex' from here to prevent breaking internal card layouts */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* This centers the two card-groups */
 }
+
+/* ===== CARD GROUPS (The Alignment Fix) ===== */
+.card-group {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-bottom: 28px;
+    
+    /* FIX: This makes both rows the exact same width */
+    width: 100%; 
+    max-width: 1000px; /* Adjust this to control how "compressed" the whole dashboard is */
+}
+
+.card {
+    background: #1a1a1a;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 0 18px rgba(0,0,0,0.45);
+    transition: transform 0.2s ease;
+    
+    /* FIX: Standardizes card behavior inside the groups */
+    flex: 1; 
+    min-width: 0; 
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== ROWS (Label Left, Value Right) ===== */
+.row {
+    display: flex;
+    justify-content: space-between; /* Keeps values on the right */
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #333;
+    width: 100%; /* Ensures the row fills the internal card width */
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
+.label { color: #b3b3b3; font-size: 15px; }
+.value { font-weight: 600; font-size: 15px; color: #ffffff; }
 
 /* ===== NAVIGATION DOCK (Centered) ===== */
 .top-controls {
     display: flex;
     justify-content: center;
+    width: 100%;
     margin-bottom: 30px;
 }
 
@@ -148,87 +186,20 @@ body {
     padding: 10px 20px;
     border-radius: 50px;
     border: 1px solid #333;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
 
-/* Hamburger fix to stay in group */
 .icon-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 8px;
-    margin-left: 0; 
-    display: flex;
-    align-items: center;
-}
-
-/* ===== CARD LAYOUT (The "Not Stretched" Fix) ===== */
-/* ===== CONTAINER ===== */
-.container {
-    width: 95%;
-    /* This width (1020px) accounts for two 500px cards + one 20px gap */
-    max-width: 1020px; 
-    margin: 40px auto;
-}
-
-/* ===== CARD GROUPS (The Alignment Fix) ===== */
-.card-group {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 20px; /* Consistent spacing between all cards */
-    margin-bottom: 28px;
-    width: 100%;
-}
-
-/* Base card style */
-.card {
-    background: #1a1a1a;
-    padding: 25px;
-    border-radius: 14px;
-    box-shadow: 0 0 18px rgba(0,0,0,0.45);
-    transition: transform 0.2s ease;
-    box-sizing: border-box;
-    /* Cards will now grow/shrink to fill the group row perfectly */
-    flex: 1; 
-    min-width: 0; /* Prevents flex items from overflowing */
-}
-
-/* Row 1 Specifics (2 cards) */
-/* They will naturally be about 500px wide each */
-
-/* Row 2 Specifics (3 cards) */
-/* They will naturally be about 326px wide each */
-
-
-/* ===== ROWS INSIDE CARDS (Label Left, Value Right) ===== */
-.row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid #333;
-}
-
-.row:last-child {
-    border-bottom: none;
-}
-
-.label { color: #b3b3b3; font-size: 15px; }
-.value { font-weight: 600; font-size: 15px; color: #ffffff; text-align: right; }
-
-/* ===== GRAPHS ===== */
-.graph-container canvas {
-    width: 100% !important;
-    height: 140px !important;
+    margin-left: 0;
 }
 
 /* ===== RESPONSIVENESS ===== */
 @media (max-width: 900px) {
     .card-group {
         flex-direction: column;
+        align-items: center;
     }
     .card {
         width: 100%;
+        max-width: 100%;
     }
 }
