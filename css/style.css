@@ -95,26 +95,25 @@ header h1 {
 
 /* ===== system status graph===== */
 /* ===== CARD GROUP LAYOUT ===== */
+/* This container makes its children (cards) sit side-by-side */
 .card-group {
     display: flex;
     flex-direction: row;
     gap: 20px;
-    align-items: stretch; /* Ensures both cards have the same height */
+    align-items: stretch; /* Keeps all cards in the row the same height */
     margin-bottom: 28px;
     width: 100%;
 }
 
-/* LEFT CARD: Stats */
-.system-stats-card {
-    flex: 1; 
-    margin-bottom: 0 !important; /* Overrides global card margin for alignment */
+/* General rule for any card inside a group */
+.card-group .card {
+    flex: 1;               /* Distributes space equally (50/50, 33/33/33, etc.) */
+    margin-bottom: 0 !important; 
+    min-width: 0;          /* Prevents content from pushing the card too wide */
 }
 
-/* RIGHT CARD: Graphs */
+/* Specific styling for the graph containers in the top row */
 .system-graphs-card {
-    flex: 1;
-    margin-bottom: 0 !important;
-    min-width: 0; /* Critical for preventing Chart.js from expanding the div infinitely */
     display: flex;
     flex-direction: column;
 }
@@ -129,11 +128,11 @@ header h1 {
 
 .graph-container canvas {
     width: 100% !important;
-    height: 140px !important; /* Fixed height for each graph */
+    height: 140px !important;
 }
 
-/* Responsiveness: Stack them on smaller screens */
-@media (max-width: 850px) {
+/* Responsiveness: Stack cards vertically on screens smaller than 900px */
+@media (max-width: 900px) {
     .card-group {
         flex-direction: column;
     }

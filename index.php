@@ -98,10 +98,13 @@ $arduino = parse_simple_text($arduino_raw);
     </section>
 
 </div>
+
+  <!-- SECOND ROW: NETWORK, UPS, & STORAGE -->
+<div class="card-group">
+
     <!-- NETWORK -->
     <section class="card">
         <h2>Network</h2>
-
         <div class="row">
             <div class="label">IP Address:</div>
             <div class="value ip" id="ipAddress"><?= $system['IP'] ?></div>
@@ -111,55 +114,47 @@ $arduino = parse_simple_text($arduino_raw);
     <!-- UPS & FAN -->
     <section class="card">
         <h2>UPS & Fan Status</h2>
-
         <div class="row">
             <div class="label">Battery:</div>
             <div class="value" id="batValue"><?= $system['BAT'] ?>%</div>
         </div>
-
         <div class="row">
             <div class="label">Temperature:</div>
             <div class="value" id="tempValue"><?= $system['TEMP'] ?> °C</div>
         </div>
-
         <div class="row">
             <div class="label">Fan Speed:</div>
             <div class="value" id="fanValue"><?= $system['FAN'] ?>%</div>
         </div>
-
         <div class="row">
             <div class="label">Power Source:</div>
             <div class="value" id="powerValue"><?= $system['POWER'] ?></div>
         </div>
     </section>
 
-
     <!-- STORAGE -->
     <section class="card">
         <h2>Storage Status</h2>
-
         <div class="row">
             <div class="label">HDD0:</div>
             <div class="value" id="hdd0"><?= $system['HDD0'] == 1 ? "Online" : "Offline" ?></div>
         </div>
-
         <div class="row">
             <div class="label">HDD1:</div>
             <div class="value" id="hdd1"><?= $system['HDD1'] == 1 ? "Online" : "Offline" ?></div>
         </div>
-
         <div class="row">
             <div class="label">HDD2:</div>
             <div class="value" id="hdd2"><?= $system['HDD2'] == 1 ? "Online" : "Offline" ?></div>
         </div>
-
         <div class="row">
             <div class="label">HDD3:</div>
             <div class="value" id="hdd3"><?= $system['HDD3'] == 1 ? "Online" : "Offline" ?></div>
         </div>
     </section>
 
-</div>
+</div> 
+
 
 <!-- REALTIME TELEMETRY SCRIPT -->
 <script>
