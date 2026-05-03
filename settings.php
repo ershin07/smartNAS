@@ -65,17 +65,21 @@ $current_duty = trim(@file_get_contents('/tmp/fan_duty')) ?: '50';
                 </select>
             </div>
         </div>
-
         <div class="row">
-            <div class="label">Fan Speed:</div>
-                <div class="value">
-                    <!-- Internal value stays 0-100 for your API -->
-                    <input type="range" id="fanSlider" min="0" max="100" value="<?php echo $current_duty; ?>">
+            <div style="width: 100%;">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="label">Fan Speed:</div>
+                    <div class="value">
+                        <!-- Hardware 0-100 (50% physical baseline) -->
+                        <input type="range" id="fanSlider" min="0" max="100" value="<?php echo $current_duty; ?>">
+                    </div>
                 </div>
-                <<button id="applyFanBtn" class="btn" 
-                    style="display: none; align-self: flex-end; background-color: #00e0c6; color: #121212; border: none; padding: 6px 12px; font-weight: bold; cursor: pointer; border-radius: 4px;">
-                Apply Changes
+                
+                <!-- Button sits directly under the slider row -->
+                <button id="applyFanBtn" class="btn" style="display: none; margin-top: 10px; background-color: #00e0c6; color: #121212; width: 100%; border: none; font-weight: bold; cursor: pointer;">
+                    Apply Changes
                 </button>
+            </div>
         </div>
 
     </section>
@@ -83,7 +87,6 @@ $current_duty = trim(@file_get_contents('/tmp/fan_duty')) ?: '50';
 </div>
 
 <script>
-// Elements
 const fanMode = document.getElementById('fanMode');
 const fanSlider = document.getElementById('fanSlider');
 const applyFanBtn = document.getElementById('applyFanBtn');
@@ -92,48 +95,39 @@ function updateSliderState() {
     const isAuto = (fanMode.value === "AUTO");
     fanSlider.disabled = isAuto;
     fanSlider.style.opacity = isAuto ? "0.5" : "1";
-    // Hide apply button if switching back to AUTO
     if (isAuto) applyFanBtn.style.display = "none";
 }
 
-// 1. Show the button when the slider is moved
+// Show button when sliding
 fanSlider.oninput = function() {
     applyFanBtn.style.display = "block";
 };
 
-// 2. Send the API request ONLY when Apply is clicked
+// Apply changes to API
 applyFanBtn.onclick = async function() {
-    const speed = fanSlider.value;
-    await fetch("api/fan.php?speed=" + speed);
-    
-    // Hide the button again after successful update
-    applyFanBtn.style.display = "none";
-    alert("Fan speed updated to " + speed + "% (Hardware Base: 50%)");
+    await fetch("api/fan.php?speed=" + fanSlider.value);
+    this.style.display = "none";
 };
 
-// Mode Change Logic
+// Mode Logic
 fanMode.onchange = async function() {
     await fetch("api/fanmode.php?mode=" + this.value);
-    
     if (this.value === "MANUAL") {
-        // Show button to confirm the manual setting
         applyFanBtn.style.display = "block";
     }
     updateSliderState();
 };
 
-// Buttons for Power
+// Power Controls
 document.getElementById('shutdownBtn').onclick = async () => {
     if (confirm("Shutdown NAS?")) await fetch("api/shutdown.php");
 };
-
 document.getElementById('rebootBtn').onclick = async () => {
     if (confirm("Reboot NAS?")) await fetch("api/reboot.php");
 };
 
-// Initial state
 updateSliderState();
-</script>
+</script>>
 
 </body>
 </html>
