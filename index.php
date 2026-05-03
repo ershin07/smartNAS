@@ -46,33 +46,85 @@ $arduino = parse_simple_text($arduino_raw);
     <!-- SYSTEM STATUS -->
     <section class="card">
         <h2>System Status</h2>
+
+        <div class="row">
+            <div class="label">CPU Temp:</div>
             <div class="value" id="cpuTemp"><?= $system['CPU_TEMP'] ?> °C</div>
+        </div>
+
+        <div class="row">
+            <div class="label">CPU Load:</div>
             <div class="value" id="cpuLoad"><?= $system['CPU_LOAD'] ?>%</div>
+        </div>
+
+        <div class="row">
+            <div class="label">Uptime:</div>
             <div class="value" id="uptime"><?= $system['UPTIME'] ?></div>
+        </div>
     </section>
 
+
      <!-- NETWORK -->
-    <section class="card">
-        <h2>Network</h2>
-        <div class="value ip" id="ipAddress"><?= $system['IP'] ?></div>
+   <section class="card">
+    <h2>Network</h2>
+
+        <div class="row">
+            <div class="label">IP Address:</div>
+            <div class="value ip" id="ipAddress"><?= $system['IP'] ?></div>
+        </div>
     </section>
 
     <!-- UPS & FAN -->
     <section class="card">
-        <div class="value" id="batValue"><?= $system['BAT'] ?>%</div>
-        <div class="value" id="tempValue"><?= $system['TEMP'] ?> °C</div>
-        <div class="value" id="fanValue"><?= $system['FAN'] ?>%</div>
-        <div class="value" id="powerValue"><?= $system['POWER'] ?></div>
+    <h2>UPS & Fan Status</h2>
+
+        <div class="row">
+            <div class="label">Battery:</div>
+            <div class="value" id="batValue"><?= $system['BAT'] ?>%</div>
+        </div>
+
+        <div class="row">
+            <div class="label">Temperature:</div>
+            <div class="value" id="tempValue"><?= $system['TEMP'] ?> °C</div>
+        </div>
+
+        <div class="row">
+            <div class="label">Fan Speed:</div>
+            <div class="value" id="fanValue"><?= $system['FAN'] ?>%</div>
+        </div>
+
+        <div class="row">
+            <div class="label">Power Source:</div>
+            <div class="value" id="powerValue"><?= $system['POWER'] ?></div>
+        </div>
     </section>
 
+
     <!-- STORAGE -->
-    <section class="card">
-        <h2>Storage Status</h2>
-        <div class="value" id="hdd0"><?= $system['HDD0'] == 1 ? "Online" : "Offline" ?></div>
-        <div class="value" id="hdd1"><?= $system['HDD1'] == 1 ? "Online" : "Offline" ?></div>
-        <div class="value" id="hdd2"><?= $system['HDD2'] == 1 ? "Online" : "Offline" ?></div>
-        <div class="value" id="hdd3"><?= $system['HDD3'] == 1 ? "Online" : "Offline" ?></div>
+    <<section class="card">
+    <h2>Storage Status</h2>
+
+        <div class="row">
+            <div class="label">HDD0:</div>
+            <div class="value" id="hdd0"><?= $system['HDD0'] == 1 ? "Online" : "Offline" ?></div>
+        </div>
+
+        <div class="row">
+            <div class="label">HDD1:</div>
+            <div class="value" id="hdd1"><?= $system['HDD1'] == 1 ? "Online" : "Offline" ?></div>
+        </div>
+
+        <div class="row">
+            <div class="label">HDD2:</div>
+            <div class="value" id="hdd2"><?= $system['HDD2'] == 1 ? "Online" : "Offline" ?></div>
+        </div>
+
+        <div class="row">
+            <div class="label">HDD3:</div>
+            <div class="value" id="hdd3"><?= $system['HDD3'] == 1 ? "Online" : "Offline" ?></div>
+        </div>
     </section>
+
 
    
 
