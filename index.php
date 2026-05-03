@@ -35,6 +35,11 @@ $arduino = parse_simple_text($arduino_raw);
     <link rel="stylesheet" href="css/style.css?v=1">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="css/style.css?v=2">
+    <nav class="top-nav">
+    <a href="index.php">Dashboard</a>
+    <a href="settings.php">Settings</a>
+</nav>
+  
 </head>
 
 <body>
