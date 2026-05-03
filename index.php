@@ -46,17 +46,41 @@ $arduino = include __DIR__ . "/api/arduino.php";
 
     <section class="card">
         <h2>Storage Status</h2>
-        <div class="row"><div class="label">HDD0:</div><div class="value"><?= ($arduino['HDD0'] ?? 0) == 1 ? "Present" : "Missing" ?></div></div>
-        <div class="row"><div class="label">HDD1:</div><div class="value"><?= ($arduino['HDD1'] ?? 0) == 1 ? "Present" : "Missing" ?></div></div>
-        <div class="row"><div class="label">HDD2:</div><div class="value"><?= ($arduino['HDD2'] ?? 0) == 1 ? "Present" : "Missing" ?></div></div>
-        <div class="row"><div class="label">HDD3:</div><div class="value"><?= ($arduino['HDD3'] ?? 0) == 1 ? "Present" : "Missing" ?></div></div>
+        <div class="row">
+            <div class="label">HDD0:</div>
+            <div class="value <?= ($arduino['HDD0'] ?? 0) == 1 ? 'present' : 'missing' ?>">
+                <?= ($arduino['HDD0'] ?? 0) == 1 ? "Present" : "Missing" ?>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="label">HDD1:</div>
+            <div class="value <?= ($arduino['HDD1'] ?? 0) == 1 ? 'present' : 'missing' ?>">
+                <?= ($arduino['HDD1'] ?? 0) == 1 ? "Present" : "Missing" ?>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="label">HDD2:</div>
+            <div class="value <?= ($arduino['HDD2'] ?? 0) == 1 ? 'present' : 'missing' ?>">
+                <?= ($arduino['HDD2'] ?? 0) == 1 ? "Present" : "Missing" ?>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="label">HDD3:</div>
+            <div class="value <?= ($arduino['HDD3'] ?? 0) == 1 ? 'present' : 'missing' ?>">
+                <?= ($arduino['HDD3'] ?? 0) == 1 ? "Present" : "Missing" ?>
+            </div>
+        </div>
+
     </section>
 
     <section class="card">
         <h2>Network</h2>
         <div class="row">
             <div class="label">IP Address:</div>
-            <div class="value"><?= $system['ip'] ?></div>
+            <div class="value ip"><?= str_replace(" ", "\n", $system['ip']) ?></div>
         </div>
     </section>
 
