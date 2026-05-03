@@ -94,33 +94,42 @@ header h1 {
 }
 
 /* ===== system status graph===== */
-/* ===== system status graph ===== */
-.system-status-card {
+/* Container to hold both cards side-by-side */
+.card-group {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    align-items: stretch; /* Stretch helps keep heights consistent */
-    gap: 20px; /* Adds space between text and graphs */
+    gap: 20px;
+    align-items: stretch; /* Makes both cards the same height */
+    margin-bottom: 28px;
 }
 
-.system-left {
-    flex: 1; /* Takes up available space */
-    min-width: 0; /* Prevents overflow in flex items */
+/* Adjust the individual cards within the group */
+.system-stats-card {
+    flex: 1; /* Takes equal width */
+    margin-bottom: 0; /* Remove default margin since group handles it */
 }
 
-.system-right {
-    flex: 1; /* Gives the charts equal weight, or set to 0.8 for smaller charts */
+.system-graphs-card {
+    flex: 1; /* Takes equal width */
+    margin-bottom: 0;
+    min-width: 0; /* Crucial for Chart.js responsiveness */
+}
+
+/* Ensure the graphs stack vertically inside their card */
+.graph-container {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    min-width: 0;
+    gap: 15px;
 }
 
-.system-right canvas {
-    max-width: 100% ; /* Ensure it stays within the div  !important*/ 
-    max-height: 150px; /* Limits the height of each graph */
-    background: #222; /* Optional: gives the chart area a slight background */
-    padding: 5px;
-    border-radius: 8px;
-    margin-bottom: 10px;
+.graph-container canvas {
+    width: 100% ;/*!important*/
+    height: 150px;
+}
+
+/* Optional: Stack cards vertically on mobile screens */
+@media (max-width: 768px) {
+    .card-group {
+        flex-direction: column;
+    }
 }
