@@ -11,15 +11,18 @@
 
     <header>
         <h1>SmartNAS Settings</h1>
+    </header>
 
-        <nav class="top-nav">
-            <a href="index.php">Dashboard</a>
+    <section class="card top-controls">
+        <div class="control-buttons">
+            <a href="index.php" class="btn-nav">Dashboard</a>
 
             <button class="icon-btn" onclick="location.href='settings.php'">
                 <span class="hamburger"></span>
             </button>
-        </nav>
-    </header>
+        </div>
+    </section>
+
 
     <section class="card">
         <h2>System Control</h2>
