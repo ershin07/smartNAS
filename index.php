@@ -49,17 +49,17 @@ $arduino = parse_simple_text($arduino_raw);
 
         <div class="row">
             <div class="label">CPU Temp:</div>
-            <div class="value" id="cpuTemp"><?= $system['cpu_temp'] ?> °C</div>
+            <div class="value" id="CPU_TEMP"><?= $system['cpu_temp'] ?> °C</div>
         </div>
 
         <div class="row">
             <div class="label">CPU Load:</div>
-            <div class="value" id="cpuLoad"><?= $system['cpu_load'] ?>%</div>
+            <div class="value" id="CPU_LOAD"><?= $system['cpu_load'] ?>%</div>
         </div>
 
         <div class="row">
             <div class="label">Uptime:</div>
-            <div class="value" id="uptime"><?= $system['uptime'] ?></div>
+            <div class="value" id="UPTIME"><?= $system['uptime'] ?></div>
         </div>
     </section>
 
@@ -69,7 +69,7 @@ $arduino = parse_simple_text($arduino_raw);
 
         <div class="row">
             <div class="label">IP Address:</div>
-            <div class="value ip"><?= str_replace(" ", "\n", $system['ip']) ?></div>
+            <div class="value ip"><?= str_replace(" ", "\n", $system['IP']) ?></div>
         </div>
     </section>
 
@@ -137,38 +137,37 @@ $arduino = parse_simple_text($arduino_raw);
 
 <!-- REALTIME TELEMETRY SCRIPT -->
 <script>
-async function updateTelemetry() {
+async function updateSystemStatus() {
     try {
-        const response = await fetch("api/arduino.php");
+        const response = await fetch("api/system.php?nocache=" + Date.now());
         const text = await response.text();
 
         const data = {};
         text.trim().split(";").forEach(pair => {
-            let key, value;
-
             if (pair.includes("=")) {
-                [key, value] = pair.split("=");
-            } else if (pair.includes(":")) {
-                [key, value] = pair.split(":");
-            }
-
-            if (key && value) {
+                const [key, value] = pair.split("=");
                 data[key.trim()] = value.trim();
             }
         });
 
-        document.getElementById("batValue").textContent = data.BAT + "%";
-        document.getElementById("tempValue").textContent = data.TEMP + " °C";
-        document.getElementById("fanValue").textContent = data.FAN + "%";
-        document.getElementById("powerValue").textContent = data.POWER;
+        document.getElementById("cpuTemp").textContent = data.CPU_TEMP + " °C";
+        document.getElementById("cpuLoad").textContent = data.CPU_LOAD + " %";
+        document.getElementById("uptime").textContent = data.UPTIME;
+        document.getElementById("ipAddress").textContent = data.IP;
 
     } catch (e) {
-        console.log("Telemetry fetch error:", e);
+        console.log("System fetch error:", e);
     }
 }
 
-setInterval(updateTelemetry, 5000);
+
+setInterval(() => {
+    updateTelemetry();
+    updateSystemStatus();
+}, 2000);
+
 updateTelemetry();
+updateSystemStatus();
 </script>
 </body>
 </html>
