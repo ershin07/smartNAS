@@ -52,6 +52,12 @@ $arduino = parse_simple_text($arduino_raw);
             <button class="icon-btn" onclick="location.href='settings.php'">
                 <span class="hamburger"></span>
             </button>
+
+             <button class="omv-btn" onclick="window.open('http://pinas.local:8080', '_blank')">
+                <i class="fas fa-database"></i> OMV
+            </button>
+</div>
+
         </div>
     </section>
    <!-- SYSTEM SECTION GROUP -->
