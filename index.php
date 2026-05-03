@@ -37,8 +37,11 @@ $arduino = parse_simple_text($arduino_raw);
     <link rel="stylesheet" href="css/style.css?v=2">
     <nav class="top-nav">
     <a href="index.php">Dashboard</a>
-    <a href="settings.php">Settings</a>
-</nav>
+    <button class="icon-btn" onclick="location.href='settings.php'">
+        <span class="hamburger"></span>
+    </button>
+    </nav>
+
   
 </head>
 

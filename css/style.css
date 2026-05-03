@@ -137,3 +137,62 @@ header h1 {
         flex-direction: column;
     }
 }
+
+.top-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.top-nav a {
+    color: #ccc;
+    margin-right: 20px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.top-nav a:hover {
+    color: #fff;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    margin-left: 15px;
+}
+
+.hamburger,
+.hamburger::before,
+.hamburger::after {
+    width: 24px;
+    height: 3px;
+    background: #00e0c6;
+    display: block;
+    border-radius: 2px;
+    transition: 0.2s;
+    position: relative;
+}
+
+.hamburger::before,
+.hamburger::after {
+    content: "";
+    position: absolute;
+    left: 0;
+}
+
+.hamburger::before {
+    top: -7px;
+}
+
+.hamburger::after {
+    top: 7px;
+}
+
+.icon-btn:hover .hamburger,
+.icon-btn:hover .hamburger::before,
+.icon-btn:hover .hamburger::after {
+    background: #fff;
+}
