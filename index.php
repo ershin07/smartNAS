@@ -46,89 +46,32 @@ $arduino = parse_simple_text($arduino_raw);
     <!-- SYSTEM STATUS -->
     <section class="card">
         <h2>System Status</h2>
-
-        <div class="row">
-            <div class="label">CPU Temp:</div>
-            <div class="value" id="CPU_TEMP"><?= $system['cpu_temp'] ?> °C</div>
-        </div>
-
-        <div class="row">
-            <div class="label">CPU Load:</div>
-            <div class="value" id="CPU_LOAD"><?= $system['cpu_load'] ?>%</div>
-        </div>
-
-        <div class="row">
-            <div class="label">Uptime:</div>
-            <div class="value" id="UPTIME"><?= $system['uptime'] ?></div>
-        </div>
+            <div class="value" id="cpuTemp"><?= $system['CPU_TEMP'] ?> °C</div>
+            <div class="value" id="cpuLoad"><?= $system['CPU_LOAD'] ?>%</div>
+            <div class="value" id="uptime"><?= $system['UPTIME'] ?></div>
     </section>
 
      <!-- NETWORK -->
     <section class="card">
         <h2>Network</h2>
-
-        <div class="row">
-            <div class="label">IP Address:</div>
-            <div class="value ip"><?= str_replace(" ", "\n", $system['IP']) ?></div>
-        </div>
+        <div class="value ip" id="ipAddress"><?= $system['IP'] ?></div>
     </section>
 
     <!-- UPS & FAN -->
     <section class="card">
-        <h2>UPS & Fan Status</h2>
-
-        <div class="row">
-            <div class="label">Battery:</div>
-            <div class="value" id="batValue"><?= $arduino['BAT'] ?>%</div>
-        </div>
-
-        <div class="row">
-            <div class="label">Temperature:</div>
-            <div class="value" id="tempValue"><?= $arduino['TEMP'] ?> °C</div>
-        </div>
-
-        <div class="row">
-            <div class="label">Fan Speed:</div>
-            <div class="value" id="fanValue"><?= $arduino['FAN'] ?>%</div>
-        </div>
-
-        <div class="row">
-            <div class="label">Power Source:</div>
-            <div class="value" id="powerValue"><?= $arduino['POWER'] ?></div>
-        </div>
+        <div class="value" id="batValue"><?= $system['BAT'] ?>%</div>
+        <div class="value" id="tempValue"><?= $system['TEMP'] ?> °C</div>
+        <div class="value" id="fanValue"><?= $system['FAN'] ?>%</div>
+        <div class="value" id="powerValue"><?= $system['POWER'] ?></div>
     </section>
 
     <!-- STORAGE -->
     <section class="card">
         <h2>Storage Status</h2>
-
-        <div class="row">
-            <div class="label">HDD0:</div>
-            <div class="value <?= ($arduino['HDD0'] ?? 0) == 1 ? 'present' : 'missing' ?>">
-                <?= ($arduino['HDD0'] ?? 0) == 1 ? "Present" : "Missing" ?>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="label">HDD1:</div>
-            <div class="value <?= ($arduino['HDD1'] ?? 0) == 1 ? 'present' : 'missing' ?>">
-                <?= ($arduino['HDD1'] ?? 0) == 1 ? "Present" : "Missing" ?>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="label">HDD2:</div>
-            <div class="value <?= ($arduino['HDD2'] ?? 0) == 1 ? 'present' : 'missing' ?>">
-                <?= ($arduino['HDD2'] ?? 0) == 1 ? "Present" : "Missing" ?>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="label">HDD3:</div>
-            <div class="value <?= ($arduino['HDD3'] ?? 0) == 1 ? 'present' : 'missing' ?>">
-                <?= ($arduino['HDD3'] ?? 0) == 1 ? "Present" : "Missing" ?>
-            </div>
-        </div>
+        <div class="value" id="hdd0"><?= $system['HDD0'] == 1 ? "Online" : "Offline" ?></div>
+        <div class="value" id="hdd1"><?= $system['HDD1'] == 1 ? "Online" : "Offline" ?></div>
+        <div class="value" id="hdd2"><?= $system['HDD2'] == 1 ? "Online" : "Offline" ?></div>
+        <div class="value" id="hdd3"><?= $system['HDD3'] == 1 ? "Online" : "Offline" ?></div>
     </section>
 
    
@@ -144,29 +87,43 @@ async function updateSystemStatus() {
 
         const data = {};
         text.trim().split(";").forEach(pair => {
+            let key, value;
+
             if (pair.includes("=")) {
-                const [key, value] = pair.split("=");
+                [key, value] = pair.split("=");
+            } else if (pair.includes(":")) {
+                [key, value] = pair.split(":");
+            }
+
+            if (key && value) {
                 data[key.trim()] = value.trim();
             }
         });
 
+        // SYSTEM
         document.getElementById("cpuTemp").textContent = data.CPU_TEMP + " °C";
         document.getElementById("cpuLoad").textContent = data.CPU_LOAD + " %";
         document.getElementById("uptime").textContent = data.UPTIME;
         document.getElementById("ipAddress").textContent = data.IP;
+
+        // UPS & FAN
+        document.getElementById("batValue").textContent = data.BAT + "%";
+        document.getElementById("tempValue").textContent = data.TEMP + " °C";
+        document.getElementById("fanValue").textContent = data.FAN + "%";
+        document.getElementById("powerValue").textContent = data.POWER;
+
+        // HDDs
+        document.getElementById("hdd0").textContent = data.HDD0 == 1 ? "Online" : "Offline";
+        document.getElementById("hdd1").textContent = data.HDD1 == 1 ? "Online" : "Offline";
+        document.getElementById("hdd2").textContent = data.HDD2 == 1 ? "Online" : "Offline";
+        document.getElementById("hdd3").textContent = data.HDD3 == 1 ? "Online" : "Offline";
 
     } catch (e) {
         console.log("System fetch error:", e);
     }
 }
 
-
-setInterval(() => {
-    updateTelemetry();
-    updateSystemStatus();
-}, 2000);
-
-updateTelemetry();
+setInterval(updateSystemStatus, 2000);
 updateSystemStatus();
 </script>
 </body>
