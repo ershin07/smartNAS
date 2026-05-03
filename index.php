@@ -146,7 +146,11 @@ $arduino = parse_simple_text($arduino_raw);
         </div>
     </section>
 
-
+     <!-- RIGHT SIDE: Real-time charts -->
+    <div class="system-right">
+        <canvas id="cpuLoadChart"></canvas>
+        <canvas id="memUsedChart"></canvas>
+    </div>
    
 
 </div>
@@ -199,7 +203,61 @@ async function updateSystemStatus() {
     } catch (e) {
         console.log("System fetch error:", e);
     }
+    let now = new Date().toLocaleTimeString();
+    
+    chartLabels.push(now);
+
+    cpuLoadData.push(parseInt(data.CPU_LOAD));
+    memUsedData.push(parseInt(data.MEM));
+
+    if (chartLabels.length > 20) {
+        chartLabels.shift();
+        cpuLoadData.shift();
+        memUsedData.shift();
+    }
+
+    cpuLoadChart.update();
+    memUsedChart.update();
+
 }
+
+let cpuLoadData = [];
+let memUsedData = [];
+let chartLabels = [];
+
+const cpuLoadChart = new Chart(document.getElementById('cpuLoadChart'), {
+    type: 'line',
+    data: {
+        labels: chartLabels,
+        datasets: [{
+            label: 'CPU Load (%)',
+            data: cpuLoadData,
+            borderColor: 'rgb(54, 162, 235)',
+            tension: 0.3
+        }]
+    },
+    options: {
+        animation: false,
+        scales: { y: { beginAtZero: true, max: 100 } }
+    }
+});
+
+const memUsedChart = new Chart(document.getElementById('memUsedChart'), {
+    type: 'line',
+    data: {
+        labels: chartLabels,
+        datasets: [{
+            label: 'Memory Used (%)',
+            data: memUsedData,
+            borderColor: 'rgb(255, 159, 64)',
+            tension: 0.3
+        }]
+    },
+    options: {
+        animation: false,
+        scales: { y: { beginAtZero: true, max: 100 } }
+    }
+});
 
 setInterval(updateSystemStatus, 2000);
 updateSystemStatus();
