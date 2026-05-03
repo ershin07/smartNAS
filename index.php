@@ -63,6 +63,16 @@ $arduino = parse_simple_text($arduino_raw);
         </div>
     </section>
 
+     <!-- NETWORK -->
+    <section class="card">
+        <h2>Network</h2>
+
+        <div class="row">
+            <div class="label">IP Address:</div>
+            <div class="value ip"><?= str_replace(" ", "\n", $system['ip']) ?></div>
+        </div>
+    </section>
+
     <!-- UPS & FAN -->
     <section class="card">
         <h2>UPS & Fan Status</h2>
@@ -121,15 +131,7 @@ $arduino = parse_simple_text($arduino_raw);
         </div>
     </section>
 
-    <!-- NETWORK -->
-    <section class="card">
-        <h2>Network</h2>
-
-        <div class="row">
-            <div class="label">IP Address:</div>
-            <div class="value ip"><?= str_replace(" ", "\n", $system['ip']) ?></div>
-        </div>
-    </section>
+   
 
 </div>
 
