@@ -117,56 +117,67 @@ header h1 {
 .hamburger::after { top: 7px; }
 
 /* ===== CARD & CARD GROUP (Centered) ===== */
-.card {
+/* ===== GLOBAL & CONTAINER ===== */
+body {
+    margin: 0;
+    padding: 0;
+    background: #0d0d0d;
+    color: #e6e6e6;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.container {
+    width: 95%;
+    max-width: 1200px; 
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+/* ===== NAVIGATION DOCK ===== */
+.top-controls {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
     background: #1a1a1a;
-    padding: 25px;
-    margin-bottom: 28px;
-    border-radius: 14px;
-    box-shadow: 0 0 18px rgba(0,0,0,0.45);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    width: 100%; /* Ensures cards fill the container width */
-    box-sizing: border-box;
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 1px solid #333;
 }
 
-.card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 25px rgba(0,0,0,0.6);
-}
-
-.card h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 24px;
-    font-weight: 600;
-    color: #f2f2f2;
-}
-
-/* Centers the card groups */
+/* ===== CARD GROUPS (Equal Row Widths) ===== */
 .card-group {
     display: flex;
     flex-direction: row;
-    justify-content: center; 
     gap: 20px;
-    align-items: stretch;
     margin-bottom: 28px;
-    width: 100%;
+    width: 100%; 
+    max-width: 1000px; /* This controls the "compression" of both rows */
 }
 
-.card-group .card {
-    flex: 1;
-    margin-bottom: 0 !important;
+.card {
+    background: #1a1a1a;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 0 18px rgba(0,0,0,0.45);
+    flex: 1; 
+    min-width: 0; /* Critical for Chart.js resizing */
+    box-sizing: border-box;
 }
 
-/* Graph Container Logic */
-.graph-container canvas {
-    width: 100% !important;
-    height: 140px !important;
-}
-
-/* ===== ROWS & VALUES ===== */
+/* ===== ROWS (Label Left, Value Right) ===== */
 .row {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; 
+    align-items: center;
     padding: 12px 0;
     border-bottom: 1px solid #333;
 }
@@ -175,16 +186,31 @@ header h1 {
     border-bottom: none;
 }
 
+/* ===== GRAPH FIXES ===== */
+.system-graphs-card {
+    display: block; /* Changed from flex to block to stabilize canvas */
+}
+
+.graph-container {
+    width: 100%;
+    position: relative; /* Helps Chart.js maintain aspect ratio */
+    margin-top: 10px;
+}
+
+.graph-container canvas {
+    width: 100% !important;
+    height: 140px !important; 
+    display: block;
+}
+
 /* ===== RESPONSIVENESS ===== */
 @media (max-width: 900px) {
     .card-group {
         flex-direction: column;
         align-items: center;
     }
-    
-    .control-buttons {
-        flex-wrap: wrap;
-        justify-content: center;
-        border-radius: 20px;
+    .card {
+        width: 100%;
+        max-width: 100%;
     }
 }
