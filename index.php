@@ -1,3 +1,26 @@
+<?php
+
+function parse_simple_text($text) {
+    $result = [];
+    $pairs = explode(";", trim($text));
+
+    foreach ($pairs as $pair) {
+        if (strpos($pair, ":") !== false) {
+            list($key, $value) = explode(":", $pair, 2);
+            $result[trim($key)] = trim($value);
+        }
+    }
+
+    return $result;
+}
+
+$system_raw = file_get_contents("api/system.php");
+$arduino_raw = file_get_contents("api/arduino.php");
+
+$system = parse_simple_text($system_raw);
+$arduino = parse_simple_text($arduino_raw);
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -109,30 +132,29 @@
 async function updateTelemetry() {
     try {
         const response = await fetch("api/arduino.php");
-        const data = await response.json();
+        const text = await response.text();
 
-        // UPS & FAN
+        // Parse simple text format
+        const data = {};
+        text.trim().split(";").forEach(pair => {
+            const [key, value] = pair.split(":");
+            if (key && value) data[key.trim()] = value.trim();
+        });
+
         document.getElementById("batValue").textContent = data.BAT + "%";
         document.getElementById("tempValue").textContent = data.TEMP + " °C";
         document.getElementById("fanValue").textContent = data.FAN + "%";
         document.getElementById("powerValue").textContent = data.POWER;
-
-        // SYSTEM (optional if you want realtime system stats)
-        // document.getElementById("cpuTemp").textContent = data.cpu_temp + " °C";
-        // document.getElementById("cpuLoad").textContent = data.cpu_load + "%";
-        // document.getElementById("uptime").textContent = data.uptime;
 
     } catch (e) {
         console.log("Telemetry fetch error:", e);
     }
 }
 
-// Update every 5 seconds
 setInterval(updateTelemetry, 5000);
-
-// Update immediately on page load
 updateTelemetry();
 </script>
+
 
 </body>
 </html>
