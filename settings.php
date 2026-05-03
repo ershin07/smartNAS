@@ -72,6 +72,9 @@ $current_duty = trim(@file_get_contents('/tmp/fan_duty')) ?: '50';
                     <!-- Internal value stays 0-100 for your API -->
                     <input type="range" id="fanSlider" min="0" max="100" value="<?php echo $current_duty; ?>">
                 </div>
+                <button id="applyFanBtn" class="btn" style="display: none; margin-top: 10px; background-color: #00e0c6; color: #121212; width: 100%;">
+                    Apply Changes
+                </button>
         </div>
 
     </section>
@@ -79,43 +82,55 @@ $current_duty = trim(@file_get_contents('/tmp/fan_duty')) ?: '50';
 </div>
 
 <script>
-// Buttons
-document.getElementById('shutdownBtn').onclick = async () => {
-    if (!confirm("Shutdown NAS?")) return;
-    await fetch("api/shutdown.php");
-};
-
-document.getElementById('rebootBtn').onclick = async () => {
-    if (!confirm("Reboot NAS?")) return;
-    await fetch("api/reboot.php");
-};
-
-// Fan controls
+// Elements
 const fanMode = document.getElementById('fanMode');
 const fanSlider = document.getElementById('fanSlider');
+const applyFanBtn = document.getElementById('applyFanBtn');
 
 function updateSliderState() {
     const isAuto = (fanMode.value === "AUTO");
     fanSlider.disabled = isAuto;
     fanSlider.style.opacity = isAuto ? "0.5" : "1";
+    // Hide apply button if switching back to AUTO
+    if (isAuto) applyFanBtn.style.display = "none";
 }
 
-// Mode Change: Sets mode and sends current slider value if Manual
+// 1. Show the button when the slider is moved
+fanSlider.oninput = function() {
+    applyFanBtn.style.display = "block";
+};
+
+// 2. Send the API request ONLY when Apply is clicked
+applyFanBtn.onclick = async function() {
+    const speed = fanSlider.value;
+    await fetch("api/fan.php?speed=" + speed);
+    
+    // Hide the button again after successful update
+    applyFanBtn.style.display = "none";
+    alert("Fan speed updated to " + speed + "% (Hardware Base: 50%)");
+};
+
+// Mode Change Logic
 fanMode.onchange = async function() {
     await fetch("api/fanmode.php?mode=" + this.value);
     
     if (this.value === "MANUAL") {
-        await fetch("api/fan.php?speed=" + fanSlider.value);
+        // Show button to confirm the manual setting
+        applyFanBtn.style.display = "block";
     }
     updateSliderState();
 };
 
-// Slider Change: Sends 0-100 directly to your PWM API
-fanSlider.onchange = async function() {
-    await fetch("api/fan.php?speed=" + this.value);
+// Buttons for Power
+document.getElementById('shutdownBtn').onclick = async () => {
+    if (confirm("Shutdown NAS?")) await fetch("api/shutdown.php");
 };
 
-// Initial state check on page load
+document.getElementById('rebootBtn').onclick = async () => {
+    if (confirm("Reboot NAS?")) await fetch("api/reboot.php");
+};
+
+// Initial state
 updateSliderState();
 </script>
 
