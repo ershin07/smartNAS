@@ -70,7 +70,7 @@ $current_duty = trim(@file_get_contents('/tmp/fan_duty')) ?: '50';
             <div class="label">Fan Speed:</div>
             <div class="value">
                 <!-- Use $current_duty for the slider value -->
-                <input type="range" id="fanSlider" min="0" max="100" value="<?php echo $current_duty; ?>">
+                <input type="range" id="fanSlider" min="50" max="100" value="<?php echo $current_duty; ?>">
                 <!-- Use $current_duty for the text display -->
                 <span id="fanValueDisplay"><?php echo $current_duty; ?>%</span>
             </div>
