@@ -154,13 +154,53 @@ body {
 }
 
 /* ===== CARD GROUPS (Equal Row Widths) ===== */
+/* ===== GLOBAL & CONTAINER ===== */
+body {
+    margin: 0;
+    padding: 0;
+    background: #0d0d0d;
+    color: #e6e6e6;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* The main wrapper stays wide, but we center its contents */
+.container {
+    width: 100%; 
+    max-width: 1200px; 
+    margin: 40px auto;
+    padding: 0 20px; /* Prevents cards from hitting screen edges on mobile */
+    box-sizing: border-box;
+}
+
+/* ===== NAVIGATION DOCK (Centered) ===== */
+.top-controls {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: #1a1a1a;
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 1px solid #333;
+}
+
+/* ===== CARD GROUPS (Centered & Equal Rows) ===== */
 .card-group {
     display: flex;
     flex-direction: row;
     gap: 20px;
     margin-bottom: 28px;
+    
+    /* FIX: This makes both rows equal in width and CENTERS them */
     width: 100%; 
-    max-width: 1000px; /* This controls the "compression" of both rows */
+    max-width: 1000px; 
+    margin-left: auto;  /* Magic centering */
+    margin-right: auto; /* Magic centering */
 }
 
 .card {
@@ -169,7 +209,7 @@ body {
     border-radius: 14px;
     box-shadow: 0 0 18px rgba(0,0,0,0.45);
     flex: 1; 
-    min-width: 0; /* Critical for Chart.js resizing */
+    min-width: 0; 
     box-sizing: border-box;
 }
 
@@ -186,14 +226,17 @@ body {
     border-bottom: none;
 }
 
+.label { color: #b3b3b3; font-size: 15px; }
+.value { font-weight: 600; font-size: 15px; color: #ffffff; }
+
 /* ===== GRAPH FIXES ===== */
 .system-graphs-card {
-    display: block; /* Changed from flex to block to stabilize canvas */
+    display: block; 
 }
 
 .graph-container {
     width: 100%;
-    position: relative; /* Helps Chart.js maintain aspect ratio */
+    position: relative;
     margin-top: 10px;
 }
 
@@ -207,10 +250,5 @@ body {
 @media (max-width: 900px) {
     .card-group {
         flex-direction: column;
-        align-items: center;
-    }
-    .card {
-        width: 100%;
-        max-width: 100%;
     }
 }
