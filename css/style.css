@@ -69,7 +69,7 @@ header h1 {
     transition: 0.2s;
 }
 
-.dashboard-btn {
+.dashboard-btn:hover {
     border-color: #00e0c6;
     color: #00e0c6;
 }
@@ -108,7 +108,7 @@ header h1 {
     transition: 0.2s;
 }
 
-.setting-btn {
+.setting-btn:hover {
     border-color: #00e0c6;
     color: #00e0c6;
 }
