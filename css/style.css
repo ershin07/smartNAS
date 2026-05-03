@@ -92,3 +92,35 @@ header h1 {
     white-space: pre-line;
     line-height: 1.4;
 }
+
+/* ===== system status graph===== */
+/* ===== system status graph ===== */
+.system-status-card {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch; /* Stretch helps keep heights consistent */
+    gap: 20px; /* Adds space between text and graphs */
+}
+
+.system-left {
+    flex: 1; /* Takes up available space */
+    min-width: 0; /* Prevents overflow in flex items */
+}
+
+.system-right {
+    flex: 1; /* Gives the charts equal weight, or set to 0.8 for smaller charts */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 0;
+}
+
+.system-right canvas {
+    max-width: 100% ; /* Ensure it stays within the div  !important*/ 
+    max-height: 150px; /* Limits the height of each graph */
+    background: #222; /* Optional: gives the chart area a slight background */
+    padding: 5px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
