@@ -117,6 +117,7 @@ header h1 {
 .hamburger::after { top: 7px; }
 
 /* ===== CARD & CARD GROUP (Centered) ===== */
+/* ===== CARD & CARD GROUP (CENTERED & CONTAINED) ===== */
 .card {
     background: #1a1a1a;
     padding: 25px;
@@ -124,67 +125,53 @@ header h1 {
     border-radius: 14px;
     box-shadow: 0 0 18px rgba(0,0,0,0.45);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    width: 100%; /* Ensures cards fill the container width */
+    
+    /* FIX: This keeps the cards from expanding too far */
+    width: 100%; 
+    max-width: 480px; /* Adjust this number to make cards wider or narrower */
     box-sizing: border-box;
 }
 
-.card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 0 25px rgba(0,0,0,0.6);
+/* This container ensures that even single cards (like Network) stay in the middle */
+.container {
+    width: 95%;
+    max-width: 1000px;
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* This is the "magic" that centers the cards */
 }
 
-.card h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    font-size: 24px;
-    font-weight: 600;
-    color: #f2f2f2;
-}
-
-/* Centers the card groups */
+/* This keeps the Telemetry and Status cards side-by-side but centered */
 .card-group {
     display: flex;
     flex-direction: row;
-    justify-content: center; 
+    justify-content: center; /* Centers the group of cards */
     gap: 20px;
     align-items: stretch;
     margin-bottom: 28px;
-    width: 100%;
+    width: 100%; /* Allows the group to take up space, but justify-content centers the children */
 }
 
 .card-group .card {
-    flex: 1;
+    flex: 0 1 480px; /* Prevents cards from growing beyond 480px */
     margin-bottom: 0 !important;
 }
 
-/* Graph Container Logic */
+/* Graph Container Fix */
 .graph-container canvas {
     width: 100% !important;
     height: 140px !important;
-}
-
-/* ===== ROWS & VALUES ===== */
-.row {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #333;
-}
-
-.row:last-child {
-    border-bottom: none;
 }
 
 /* ===== RESPONSIVENESS ===== */
 @media (max-width: 900px) {
     .card-group {
         flex-direction: column;
-        align-items: center;
+        align-items: center; /* Keeps cards centered when stacked on mobile */
     }
     
-    .control-buttons {
-        flex-wrap: wrap;
-        justify-content: center;
-        border-radius: 20px;
+    .card {
+        max-width: 100%; /* Allows cards to take full width on small screens */
     }
 }
