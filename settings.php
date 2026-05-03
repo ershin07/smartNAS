@@ -72,8 +72,9 @@ $current_duty = trim(@file_get_contents('/tmp/fan_duty')) ?: '50';
                     <!-- Internal value stays 0-100 for your API -->
                     <input type="range" id="fanSlider" min="0" max="100" value="<?php echo $current_duty; ?>">
                 </div>
-                <button id="applyFanBtn" class="btn" style="display: none; margin-top: 10px; background-color: #00e0c6; color: #121212; width: 100%;">
-                    Apply Changes
+                <<button id="applyFanBtn" class="btn" 
+                    style="display: none; align-self: flex-end; background-color: #00e0c6; color: #121212; border: none; padding: 6px 12px; font-weight: bold; cursor: pointer; border-radius: 4px;">
+                Apply Changes
                 </button>
         </div>
 
