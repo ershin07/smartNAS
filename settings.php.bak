@@ -29,6 +29,7 @@ $current_duty = trim(@file_get_contents('/tmp/fan_duty')) ?: '50';
         </div>
     </section>
 
+
     <section class="card">
         <h2>System Control</h2>
 
@@ -50,9 +51,8 @@ $current_duty = trim(@file_get_contents('/tmp/fan_duty')) ?: '50';
             <div class="label">Fan Mode:</div>
             <div class="value">
                 <select id="fanMode">
-                    <!-- Check which mode is active and add 'selected' -->
-                    <option value="AUTO" <?php echo ($current_mode == 'AUTO') ? 'selected' : ''; ?>>Auto</option>
-                    <option value="MANUAL" <?php echo ($current_mode == 'MANUAL') ? 'selected' : ''; ?>>Manual</option>
+                    <option value="AUTO">Auto</option>
+                    <option value="MANUAL">Manual</option>
                 </select>
             </div>
         </div>
@@ -60,10 +60,8 @@ $current_duty = trim(@file_get_contents('/tmp/fan_duty')) ?: '50';
         <div class="row">
             <div class="label">Fan Speed:</div>
             <div class="value">
-                <!-- Use $current_duty for the slider value -->
-                <input type="range" id="fanSlider" min="0" max="100" value="<?php echo $current_duty; ?>">
-                <!-- Use $current_duty for the text display -->
-                <span id="fanValueDisplay"><?php echo $current_duty; ?>%</span>
+                <input type="range" id="fanSlider" min="0" max="100" value="50">
+                <span id="fanValueDisplay">50%</span>
             </div>
         </div>
 
@@ -98,8 +96,10 @@ function updateSliderState() {
 
 // Mode Change Logic
 fanMode.onchange = async function() {
+    // 1. Tell Arduino to switch modes
     await fetch("api/fanmode.php?mode=" + fanMode.value);
     
+    // 2. If switched to MANUAL, immediately sync the fan speed to the current slider position
     if (fanMode.value === "MANUAL") {
         await fetch("api/fan.php?speed=" + fanSlider.value);
     }
@@ -112,13 +112,14 @@ fanSlider.oninput = function() {
     fanValueDisplay.textContent = fanSlider.value + "%";
 };
 
-// Send command only when the user lets go of the slider
+// Send command only when the user lets go of the slider (efficiency)
 fanSlider.onchange = async function() {
     await fetch("api/fan.php?speed=" + fanSlider.value);
 };
 
 // Initial state check
 updateSliderState();
+
 </script>
 
 </body>
