@@ -173,25 +173,35 @@ body {
 }
 
 /* ===== NAVIGATION DOCK FIX ===== */
+/* ===== NAVIGATION DOCK (Aligned to Card Width) ===== */
 .top-controls {
     display: flex;
-    justify-content: center; /* Centers the dock on the page */
+    justify-content: center;
     width: 100%;
     margin-bottom: 30px;
+    /* Clean up any background/padding from previous attempts */
+    background: none !important;
+    padding: 0;
 }
 
 .control-buttons {
-    display: inline-flex; /* Changed from flex to inline-flex */
+    display: flex;
+    justify-content: center; /* Centers the buttons inside the dock */
     gap: 15px;
     align-items: center;
     background: #1a1a1a;
     padding: 10px 20px;
-    border-radius: 50px;
+    border-radius: 12px; /* Matches your card radius more closely */
     border: 1px solid #333;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     
-    /* This prevents it from stretching to the full width of the container */
-    width: auto; 
+    /* THE FIX: Matches the width of your card rows exactly */
+    width: 100%;
+    max-width: 1000px; 
+    box-sizing: border-box;
+}
+
+.icon-btn {
+    margin-left: 0; /* Keeps hamburger grouped with buttons */
 }
 
 /* ===== CARD GROUPS (Centered & Equal Rows) ===== */
