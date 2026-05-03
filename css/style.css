@@ -117,48 +117,101 @@ header h1 {
 .hamburger::after { top: 7px; }
 
 /* ===== CARD & CARD GROUP (Centered) ===== */
-/* ===== CARD & CARD GROUP (CENTERED & CONTAINED) ===== */
+/* ===== GLOBAL & CONTAINER ===== */
+body {
+    margin: 0;
+    padding: 0;
+    background: #0d0d0d;
+    color: #e6e6e6;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.container {
+    width: 95%;
+    max-width: 1100px; /* Limits how wide the whole dashboard can get */
+    margin: 40px auto;
+    /* We remove 'display: flex' from here to prevent breaking internal card layouts */
+}
+
+/* ===== NAVIGATION DOCK (Centered) ===== */
+.top-controls {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.control-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: #1a1a1a;
+    padding: 10px 20px;
+    border-radius: 50px;
+    border: 1px solid #333;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+
+/* Hamburger fix to stay in group */
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    margin-left: 0; 
+    display: flex;
+    align-items: center;
+}
+
+/* ===== CARD LAYOUT (The "Not Stretched" Fix) ===== */
 .card {
     background: #1a1a1a;
     padding: 25px;
     margin-bottom: 28px;
     border-radius: 14px;
     box-shadow: 0 0 18px rgba(0,0,0,0.45);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease;
     
-    /* FIX: This keeps the cards from expanding too far */
-    width: 100%; 
-    max-width: 480px; /* Adjust this number to make cards wider or narrower */
-    box-sizing: border-box;
+    /* This centers the card itself without breaking the text inside */
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 500px; /* Limits width so it's not stretched */
 }
 
-/* This container ensures that even single cards (like Network) stay in the middle */
-.container {
-    width: 95%;
-    max-width: 1000px;
-    margin: 40px auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* This is the "magic" that centers the cards */
-}
-
-/* This keeps the Telemetry and Status cards side-by-side but centered */
+/* For the side-by-side cards (Status and Telemetry) */
 .card-group {
     display: flex;
     flex-direction: row;
-    justify-content: center; /* Centers the group of cards */
+    justify-content: center; 
     gap: 20px;
-    align-items: stretch;
     margin-bottom: 28px;
-    width: 100%; /* Allows the group to take up space, but justify-content centers the children */
+    width: 100%;
 }
 
 .card-group .card {
-    flex: 0 1 480px; /* Prevents cards from growing beyond 480px */
-    margin-bottom: 0 !important;
+    flex: 1;
+    max-width: 500px; /* Each card in a group gets this max-width */
+    margin-left: 0;
+    margin-right: 0;
 }
 
-/* Graph Container Fix */
+/* ===== ROWS (Label Left, Value Right) ===== */
+.row {
+    display: flex;
+    justify-content: space-between; /* This puts value back on the right */
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #333;
+    width: 100%; /* Ensures it fills the card width */
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
+.label { color: #b3b3b3; font-size: 15px; }
+.value { font-weight: 600; font-size: 15px; color: #ffffff; text-align: right; }
+
+/* ===== GRAPHS ===== */
 .graph-container canvas {
     width: 100% !important;
     height: 140px !important;
@@ -168,10 +221,9 @@ header h1 {
 @media (max-width: 900px) {
     .card-group {
         flex-direction: column;
-        align-items: center; /* Keeps cards centered when stacked on mobile */
+        align-items: center;
     }
-    
     .card {
-        max-width: 100%; /* Allows cards to take full width on small screens */
+        max-width: 100%; /* Take full width on mobile */
     }
 }
